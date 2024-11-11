@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center mb-3">Product List</h1>
+    <div class="row">
+        <div class="col-md-3" th:each="product : ${products}" style="margin: 5px 0 5px 0" >
+            <div class="card h-100 shadow-sm" >
+                <div class="card-img-container">
+                    <!-- Hiển thị ảnh sản phẩm -->
+                    <img th:src="@{/images/{imageFilename}(imageFilename=${product.imageFilename})}" alt="Image of product" class="card-img-top">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${product.name}">Product Name</h5>
+                    <p class="card-text" th:text="${product.description}">Product description</p>
+                    <p class="card-text" th:text="${product.price}">Price</p>
+                    <form action="/orderProduct" method="post" >
+                        <input type="hidden" name="productId" th:value="${product.id}" />
+                        <input type="number" name="quantity" min="1" required placeholder="Qty">
+                        <button type="submit" class="btn btn-primary" style="margin-top: 20px">Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
