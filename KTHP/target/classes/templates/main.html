@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HT SHOP</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            margin-left: 50px;
+        }
+        .product-item {
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .product-item img {
+            width: 100%;
+            height: auto;
+        }
+        .product-item h3 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .product-item .price {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="nav-link" href="/main"><img style="width: 70px;height: 50px" src="/images/logo.png" alt="HT SHOP Logo"  ></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/main">Trang Chủ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Cửa Hàng</a>
+                </li>
+            </ul>
+            <form action="/products/search" method="get" class="d-flex" role="search" style="margin-left: 600px">
+                <input class="form-control me-2" type="search" placeholder="Tìm kiếm..." name="query" th:value="${query}" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit" style="width: 150px; height: 50px">Tìm kiếm</button>
+            </form>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item dropdown" >
+                    <a class="nav-link" href="/admin">Tài Khoản</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/order">Giỏ Hàng</a>
+                </li>
+                <li class="nav-item dropdown" >
+                    <a class="nav-link" href="/auth/login">Đăng nhập</a>
+                </li>
+                <li class="nav-item dropdown" >
+                    <a class="nav-link" href="/auth/register">Đăng ký</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Slider -->
+<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel" style="margin: 20px 0;">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="5000">
+            <img src="https://badmintonw.com/uploads/slider/banner1.jpg" class="d-block w-100" alt="First slide" style="height: 400px; object-fit: cover;">
+        </div>
+        <div class="carousel-item" data-bs-interval="5000">
+            <img src="https://baybadminton.com/wp/wp-content/uploads/2014/01/Avenue_banner.jpg" class="d-block w-100" alt="Second slide" style="height: 400px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="https://badminton-shop.com/wp-content/uploads/2024/02/3.png" class="d-block w-100" alt="Third slide" style="height: 400px; object-fit: cover;">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<main>
+    <section class="product-list" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <div th:each="product : ${products}"
+             class="product-item"
+             style="width: 18rem; border: 1px solid #ccc; border-radius: 5px; overflow: hidden; text-align: center; background-color: #fff; display: flex; flex-direction: column; justify-content: space-between;">
+
+            <!-- Liên kết đến chi tiết sản phẩm -->
+            <a th:href="@{/products/detail(id=${product.id})}">
+                <!-- Hình ảnh sản phẩm -->
+                <img th:src="@{'/images/' + ${product.imageFilename}}"
+                     th:alt="${product.name}"
+                     class="product-image"
+                     style="width: 100%; height:175px;">
+            </a>
+
+            <!-- Nội dung sản phẩm -->
+            <div class="product-content" style="padding: 10px; flex-grow: 1;">
+                <h5 class="product-title"
+                    style="font-size: 1.25rem; margin: 10px 0;"
+                    th:text="${product.name}">Tên sản phẩm</h5>
+                <p class="product-description"
+                   style="font-size: 0.9rem; color: #555; margin: 10px 0;"
+                   th:text="${product.description}">Mô tả sản phẩm</p>
+                <p class="price"
+                   style="color: red; font-weight: bold;"
+                   th:text="${product.price} + ' đ'">0.000 đ</p>
+            </div>
+
+            <!-- Các nút mua và thêm vào giỏ hàng -->
+
+        </div>
+    </section>
+</main>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
